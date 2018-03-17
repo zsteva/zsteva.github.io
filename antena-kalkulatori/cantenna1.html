@@ -66,6 +66,12 @@
 			<td>&nbsp;</td>
 		</tr>
 		<tr>
+			<td><strong>wfs2</strong></td>
+			<td>1/2 Free-space Wavelength</td>
+			<td><input name="wfs2" size="8"> mm</td>
+			<td>&nbsp;</td>
+		</tr>
+			<tr>
 			<td><strong>wfs4</strong></td>
 			<td>1/4 Free-space Wavelength (element length)</td>
 			<td><input name="wfs4" size="8"> mm</td>
@@ -123,6 +129,7 @@
 		form.fop.value = form.freq.value;
 
 		form.wfs.value=round3dig(1e-6 * c / form.fop.value); 
+		form.wfs2.value=round3dig(.5 * form.wfs.value); 
 		form.wfs4.value=round3dig(.25 * form.wfs.value); 
 		form.wg.value=round3dig(1 / Math.sqrt(1/(form.wfs.value * form.wfs.value) - 1/(Lc*Lc))); 
 		form.wg4.value=round3dig(.25 * form.wg.value); 
