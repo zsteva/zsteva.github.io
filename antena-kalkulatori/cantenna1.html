@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>--- TODO ---</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--[if lt IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+
+	<div class="container">
+
+	<h1>Cantena calculator</h1>
+
+	<p>Origin <a href="http://web.archive.org/web/20080316034408/http://www.pelaginox.com/pc/pc-cancalc.html">http://web.archive.org/web/20080316034408/http://www.pelaginox.com/pc/pc-cancalc.html</a></p>
+
+ 
+	<form name="wavecalc">
+
+	<p>
+		Can Diameter: <font size="+2"><input name="diam" onchange="wgcalc(this.form)" size="7" value="88.9"></font>mm. &nbsp;
+		Freq: <font size="+2"><input name="freq" onchange="wgcalc(this.form)" size="2" value="2437"> Mhz</font>
+		<input name="calc" onclick="wgcalc(this.form)" type="button" value="Calculate">
+		<font size="+1"> (leave at 6)</font>
+	</p>
+
+	<table border="5">
+	<tbody>
+		<tr>
+			<td></td>
+			<td></td>
+			<td>Warning </td>
+		</tr>
+		<tr>
+			<td><strong>fcte11</strong></td>
+			<td>Cutoff Frequency for TE11 (desired) mode</td>
+			<td><input name="fcte11" size="8"> MHz</td>
+			<td><input name="fcte11warn" type="radio"> 2400 max</td>
+		</tr>
+			<td><strong>fctm01</strong></td>
+			<td>Cutoff Frequency for TM01 (undesired) mode</td>
+			<td><input name="fctm01" size="8"> MHz</td>
+			<td><input name="fctm01warn" type="radio"> 2475 min </td>
+		</tr>
+		<tr>
+			<td><strong>fop</strong></td>
+			<td>Operating Frequency for this channel</td>
+			<td><input name="fop" size="8"> Mhz</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><strong>wfs</strong></td>
+			<td>Free-space wavelength</td>
+			<td><input name="wfs" size="8"> mm</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><strong>wfs4</strong></td>
+			<td>1/4 Free-space Wavelength (element length)</td>
+			<td><input name="wfs4" size="8"> mm</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><strong>wg</strong></td>
+			<td>In-Guide Wavelength</td>
+			<td><input name="wg" size="8"> mm</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><strong>wg4</strong></td>
+			<td><b># 1/4 Guide W/L (rear standoff) #</b></td>
+			<td><input name="wg4" size="8"> mm</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><strong>wg34</strong></td>
+			<td>3/4 Guide W/L (optimum can length)</td>
+			<td><input name="wg34" size="8"> mm</td>
+			<td>&nbsp;</td>
+		</tr>
+	</tbody>
+	</table>
+
+	</form>
+
+	</div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<script>
+	function round3dig(x) {
+		return Math.round(x*1000)/1000;
+	} 
+  
+	function wgcalc(form) { 
+		//var c = 3.0e10 / 2.54; 
+		var c = 3.0e11;
+		var L0, Lc; 
+		Lc = 1.706 * form.diam.value;  
+
+		form.fcte11.value = round3dig(1e-6 * c / Lc);  
+		form.fcte11warn.checked = (form.fcte11.value > 2400.); 
+		form.fctm01.value = round3dig(1.306 * 1e-6 * c / Lc); 
+		form.fctm01warn.checked = (form.fctm01.value < 2475.); 
+
+		// form.fop.value=(2407 + .005 * form.chan.value); 
+		form.fop.value = form.freq.value;
+
+		form.wfs.value=round3dig(1e-6 * c / form.fop.value); 
+		form.wfs4.value=round3dig(.25 * form.wfs.value); 
+		form.wg.value=round3dig(1 / Math.sqrt(1/(form.wfs.value * form.wfs.value) - 1/(Lc*Lc))); 
+		form.wg4.value=round3dig(.25 * form.wg.value); 
+		form.wg34.value=round3dig(.75 * form.wg.value); 
+	} 
+	</script>
+
+
+
+  </body>
+</html>
+
